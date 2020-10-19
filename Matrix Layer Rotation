@@ -1,0 +1,65 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+# Complete the matrixRotation function below.
+def matrixRotation(matrix, r):
+    # There is no need to perform rotation if there is only a single element in the entire matrix
+    if len(set(item for row in matrix for item in row)) > 1:
+        layers = min(m,n)//2
+        #create a temporary matrix for storing each layer
+        tempMat = []
+        for i in range(layers):
+            # Each layer is appended to tmp, which is then appended to the temporary matrix
+            tmp = []
+            for j in range(i,n-1-i):
+                tmp.append(matrix[i][j])
+            for j in range(i,m-1-i):
+                tmp.append(matrix[j][n-1-i])
+            for j in range(n-1-i,i,-1):
+                tmp.append(matrix[m-1-i][j])
+            for j in range(m-1-i,i,-1):
+                tmp.append(matrix[j][i])
+            tempMat.append(tmp)
+
+        # Modifying the matrix to perform the rotation
+        for i in range(layers):
+            length = len(tempMat[i])
+            index = r%length
+
+            for j in range(i,n-1-i):
+                matrix[i][j] = tempMat[i][index]
+                index = (index+1)%length
+            for j in range(i,m-1-i):
+                matrix[j][n-1-i] = tempMat[i][index]
+                index = (index+1)%length
+            for j in range(n-1-i,i,-1):
+                matrix[m-1-i][j] = tempMat[i][index]
+                index = (index+1)%length
+            for j in range(m-1-i,i,-1):
+                matrix[j][i] = tempMat[i][index]
+                index = (index+1)%length
+    
+    for i in matrix:
+        print(*i)
+
+
+if __name__ == '__main__':
+    mnr = input().rstrip().split()
+
+    m = int(mnr[0])
+
+    n = int(mnr[1])
+
+    r = int(mnr[2])
+
+    matrix = []
+
+    for _ in range(m):
+        matrix.append(list(map(int, input().rstrip().split())))
+
+    matrixRotation(matrix, r)
