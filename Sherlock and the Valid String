@@ -1,0 +1,37 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+# Complete the isValid function below.
+def isValid(s):
+    d = {}
+    for char in s:
+        d[char] = d.get(char,0)+1
+        
+    # print(d)
+    newD = {}
+    for v in d.values():
+        newD[v] = newD.get(v,0)+1
+        if len(newD)>2:
+            return 'NO'
+        if len(newD) == 2:
+            k1,k2 = newD.keys()
+            if newD[k1] > 1 and newD[k2] > 1:
+                return 'NO'
+            if  not((newD[k1]==1 and k1==1) or(newD[k2]==1 and k2==1) ) and  abs(k1-k2) != 1:
+                return 'NO'
+    return 'YES'
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    s = input()
+
+    result = isValid(s)
+
+    fptr.write(result + '\n')
+
+    fptr.close()
