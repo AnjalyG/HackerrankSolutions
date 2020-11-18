@@ -1,0 +1,37 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+# Complete the sherlockAndAnagrams function below.
+def sherlockAndAnagrams(s):
+    seen = set()
+    result = 0
+    for k in range(1,len(s)):
+        for i in range(len(s)):
+            tmp = sorted(s[i:i+k])
+            if str(tmp) not in seen:
+                tmpCount = 1
+                for j in range(i+1,len(s)):
+                    if tmp==sorted(s[j:j+k]):
+                        tmpCount += 1
+                seen.add(str(tmp))
+                result += (tmpCount*(tmpCount-1))//2  if tmpCount>1 else 0
+    return result
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    q = int(input())
+
+    for q_itr in range(q):
+        s = input()
+
+        result = sherlockAndAnagrams(s)
+
+        fptr.write(str(result) + '\n')
+
+    fptr.close()
