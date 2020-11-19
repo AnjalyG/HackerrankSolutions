@@ -1,0 +1,58 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+"""
+1x-  : Insert x in your data structure.
+2y-  : Delete one occurence of y from your data structure, if present.
+3z-  : Check if any integer is present whose frequency is exactly . 
+If yes, print 1 else 0.
+"""
+# Complete the freqQuery function below.
+def freqQuery(queries):
+    d = {}
+    frequencies = {}
+    ans = []
+    for q in queries:
+        if q[0] == 1:
+            currentFreq = d.get(q[1],0)
+            d[q[1]] = d.get(q[1],0)+1
+            frequencies[currentFreq] = frequencies.get(currentFreq,0) - 1
+            if frequencies[currentFreq] <= 0:
+                del frequencies[currentFreq]
+            frequencies[currentFreq+1] = frequencies.get(currentFreq+1,0) + 1
+        
+        elif q[0] == 2:
+            currentFreq = d.get(q[1],0)
+            d[q[1]] = d.get(q[1],0)-1
+            frequencies[currentFreq] = frequencies.get(currentFreq,0) - 1
+            if frequencies[currentFreq] <= 0:
+                del frequencies[currentFreq]
+            frequencies[currentFreq-1] = frequencies.get(currentFreq -1,0) + 1
+            if d[q[1]] <= 0:
+                del d[q[1]]
+        elif q[0] == 3:
+            if q[1] in frequencies:
+                ans.append(1)
+            else:
+                ans.append(0)
+    return ans
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    q = int(input().strip())
+
+    queries = []
+
+    for _ in range(q):
+        queries.append(list(map(int, input().rstrip().split())))
+
+    ans = freqQuery(queries)
+
+    fptr.write('\n'.join(map(str, ans)))
+    fptr.write('\n')
+
+    fptr.close()
